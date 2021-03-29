@@ -35,6 +35,8 @@ var config = {
 
 var boby;
 var power;
+var star;
+var victoire = false;
 var inter;
 var inter1;
 var power1;
@@ -66,6 +68,7 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.image('power', 'assets/power.png');
+    this.load.image('star', 'assets/star.png');
     this.load.image('vie1', 'assets/vie1.png');
     this.load.image('vie2', 'assets/vie2.png');
     this.load.image('vie3', 'assets/vie3.png');
@@ -104,6 +107,7 @@ function create ()
     power1 = this.physics.add.staticGroup();
     yeti = this.physics.add.staticGroup();
     hp = this.physics.add.staticGroup();
+    star = this.physics.add.staticGroup();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -114,6 +118,7 @@ function create ()
 
     //  Now let's create some ledges
     glace.create(600, 400, 'glace');
+    star.create(2000, 470, 'star');
     platforms.create(1400, 950, 'ground1');
     neige.create(50, 230, 'neige');
     neige.create(2000, 500, 'neige');
@@ -176,6 +181,7 @@ function create ()
     
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms,toucheGround);
+    this.physics.add.collider(player, star,toucheTropher);
     this.physics.add.collider(player, glace,toucheGlace);
     this.physics.add.collider(player, neige,toucheNeige);
     this.physics.add.overlap(player, power,touchePower);
@@ -263,6 +269,7 @@ function create ()
     hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
     inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
     controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
+    scoreText = this.add.text(525, 75, 'Etat du carton', { fontSize: '20px', fill: '#000' }).setScrollFactor(0).setVisible(true);
 }
     function toucheGlace()
     {
@@ -303,6 +310,10 @@ function create ()
             }
         }
     }
+    function toucheTropher(player, star)
+    {
+        return;
+    }
 function update ()
 {
     if(vie>0 && degat == false)
@@ -339,7 +350,6 @@ function update ()
     
     if (gameOver == true)
     {
-
         return;
     }
     this.input.gamepad.once('connected', function (pad) {
