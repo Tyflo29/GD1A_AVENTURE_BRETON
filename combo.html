@@ -35,6 +35,7 @@ var config = {
 
 var boby;
 var power;
+var power1;
 var player;
 var neige;
 var block;
@@ -88,6 +89,7 @@ function create ()
     neige = this.physics.add.staticGroup();
     wall = this.physics.add.staticGroup();
     power = this.physics.add.staticGroup();
+    power1 = this.physics.add.staticGroup();
     yeti = this.physics.add.staticGroup();
 
     //  Here we create the ground.
@@ -110,9 +112,9 @@ function create ()
     wall.create(2400,150,'wall');
     power.create(50,330,'power').setScale(1.5);
     yeti.create(1200,1200,'yeti');
-    
+    power1 = this.add.image(50,50,'power').setScrollFactor(0).setScale(3).setVisible(false);
     // The player and its settings
-    player = this.physics.add.sprite(800, 800, 'dude').setScale(1.5);
+    player = this.physics.add.sprite(400, 400, 'dude').setScale(1.5);
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -160,10 +162,8 @@ function create ()
     eis = this.physics.add.group();   
    
     //  The score
-    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-    invincText = this.add.text(16, 48, '', { fontSize: '32px', fill: '#000' });
-    niveauTexT = this.add.text(605, 16, ('Niveau: '+ niveau), { fontSize: '32px', fill: '#000' });
-    controleText = this.add.text(16, 48, '', { fontSize: '32px', fill: '#000' });
+    //niveauTexT = this.add.text(605, 16, ('Visible '), { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+    //controleText = this.add.text(16, 48, '', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
     
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms,toucheGround);
@@ -207,7 +207,7 @@ function create ()
     });
 
     glace = this.physics.add.image(1400, 950, 'glace');
-    this.physics.add.collider(player,glace,toucheGlace);
+    this.physics.add.collider(player,glace,toucheGlace,null,this);
 
     glace.body.allowGravity = false;
     glace.body.immovable = true;
@@ -222,40 +222,37 @@ function create ()
     });
     
 }
+    function toucheGlace()
+    {
+        GLACE= true;
+        GROUND= false;
+        NEIGE= false;
+    }
 
+    function toucheGround()
+    {
+        GLACE= false;
+        GROUND= true;
+        NEIGE= false;
+    }
 
-function toucheGlace()
-{
-    GLACE= true;
-    GROUND= false;
-    NEIGE= false;
-}
-
-function toucheGround()
-{
-    GLACE= false;
-    GROUND= true;
-    NEIGE= false;
-}
-
-function toucheNeige()
-{
-    NEIGE= true;
-    GROUND= false;
-    GLACE= false;
-}
-
-function touchePower()
-{
-    power.disableBody(false, false);
-    planer = true;
-    power.disableBosy(true, true);
-}
+    function toucheNeige()
+    {
+        NEIGE= true;
+        GROUND= false;
+        GLACE= false;
+    }
+    
+    function touchePower(player, power,interpower)
+    {
+        power.destroy();
+        planer = true;
+        power1.visible = true;
+        return power1;
+    }
     
 function update ()
 {
-    //boby.x = cameras.x +8;
-    //boby.y = cameras.y +1;
     
     this.cameras.main.startFollow(player,false,0.05,0.05,0,0);
     
@@ -269,7 +266,6 @@ function update ()
     paddle = pad;
     });
     
-
     if (paddleConnected == true)
         {
     
@@ -278,10 +274,10 @@ function update ()
             {
                 player.setVelocityY(-330);
             }
-            //if (planer == true){
+            if (planer == true){
                 if (paddle.B && !player.body.touching.down){
                     player.setVelocityY(10);
-                //}
+                }
             }
             
             if (GLACE == true)
@@ -318,24 +314,24 @@ function update ()
             if (NEIGE == true){
                 if(paddle.R2 && !player.body.touching.down)
                 {
-                    player.setVelocityX(50);
+                    player.setVelocityX(100);
 
                     player.anims.play('rightjump', true);
                 }
                 else if (paddle.R2 &&player.body.touching.down)
                 {
-                    player.setVelocityX(50);
+                    player.setVelocityX(100);
                     player.anims.play('right', true);
                 }
 
                 else if(paddle.L2 && !player.body.touching.down)
                 {
-                    player.setVelocityX(-50);
+                    player.setVelocityX(-100);
                     player.anims.play('leftjump', true);
                 }
                 else if (paddle.L2 && player.body.touching.down)
                 {
-                    player.setVelocityX(-50);
+                    player.setVelocityX(-100);
                     player.anims.play('left', true);
                 }
 
@@ -350,24 +346,24 @@ function update ()
             if (GROUND == true){
                 if(paddle.R2 && !player.body.touching.down)
                 {
-                    player.setVelocityX(150);
+                    player.setVelocityX(200);
 
                     player.anims.play('rightjump', true);
                 }
                 else if (paddle.R2 &&player.body.touching.down)
                 {
-                    player.setVelocityX(150);
+                    player.setVelocityX(200);
                     player.anims.play('right', true);
                 }
 
                 else if(paddle.L2 && !player.body.touching.down)
                 {
-                    player.setVelocityX(-150);
+                    player.setVelocityX(-200);
                     player.anims.play('leftjump', true);
                 }
                 else if (paddle.L2 && player.body.touching.down)
                 {
-                    player.setVelocityX(-150);
+                    player.setVelocityX(-200);
                     player.anims.play('left', true);
                 }
 
@@ -476,7 +472,8 @@ function update ()
             if (cursors.space.isDown && !player.body.touching.down){
                 player.setVelocityY(10);
             }
-      */      
+      */  
+            
     }
     }   
     
