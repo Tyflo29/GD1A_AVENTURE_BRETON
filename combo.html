@@ -22,7 +22,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: true
+            debug: false
         }
     },
     input:{gamepad:true},
@@ -268,9 +268,9 @@ function create ()
     });
     
     inter = this.add.image(500,50,'interface').setScrollFactor(0).setScale(2);
-    power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false).setDepth(2);
-    hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
-    inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
+    power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false);
+    hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true);
+    inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false);
     controleText1 = this.add.text(800, 500, 'Vous avez Gagné', { fontSize: '32px', fill: '#5F5' }).setScrollFactor(0).setVisible(false);
     controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
     scoreText = this.add.text(525, 75, 'Etat du carton', { fontSize: '20px', fill: '#000' }).setScrollFactor(0).setVisible(true);
