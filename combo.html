@@ -55,6 +55,8 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
+var controleText;
+var controleText1;
 var paddle;
 var paddleConnected=false;
 var niveau = 0;
@@ -181,7 +183,7 @@ function create ()
     
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms,toucheGround);
-    this.physics.add.collider(player, star,toucheTropher);
+    this.physics.add.overlap(player, star,toucheTropher);
     this.physics.add.collider(player, glace,toucheGlace);
     this.physics.add.collider(player, neige,toucheNeige);
     this.physics.add.overlap(player, power,touchePower);
@@ -264,13 +266,15 @@ function create ()
         repeat: -1,
         yoyo: true
     });
+    
     inter = this.add.image(500,50,'interface').setScrollFactor(0).setScale(2);
     power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false).setDepth(2);
     hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
     inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
+    controleText1 = this.add.text(800, 500, 'Vous avez Gagné', { fontSize: '32px', fill: '#5F5' }).setScrollFactor(0).setVisible(false);
     controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
     scoreText = this.add.text(525, 75, 'Etat du carton', { fontSize: '20px', fill: '#000' }).setScrollFactor(0).setVisible(true);
-}
+                                  
     function toucheGlace()
     {
         GLACE= true;
@@ -312,6 +316,8 @@ function create ()
     }
     function toucheTropher(player, star)
     {
+        controleText1.visible = true;
+        inter1.visible = true;
         return;
     }
 function update ()
