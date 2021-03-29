@@ -274,7 +274,7 @@ function create ()
     controleText1 = this.add.text(800, 500, 'Vous avez Gagné', { fontSize: '32px', fill: '#5F5' }).setScrollFactor(0).setVisible(false);
     controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
     scoreText = this.add.text(525, 75, 'Etat du carton', { fontSize: '20px', fill: '#000' }).setScrollFactor(0).setVisible(true);
-                                  
+}
     function toucheGlace()
     {
         GLACE= true;
@@ -316,8 +316,7 @@ function create ()
     }
     function toucheTropher(player, star)
     {
-        controleText1.visible = true;
-        inter1.visible = true;
+        victoire = true;
         return;
     }
 function update ()
@@ -353,7 +352,16 @@ function update ()
     } 
             
     this.cameras.main.startFollow(player,false,0.05,0.05,0,0);
-    
+    if (victoire == true)
+    {
+        controleText1.visible = true;
+        inter1.visible = true;
+        player.setVelocityX(0);
+        player.setAccelerationX(0);
+        return controleText;
+        return inter1;
+        return;
+    }
     if (gameOver == true)
     {
         return;
