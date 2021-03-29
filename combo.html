@@ -35,7 +35,14 @@ var config = {
 
 var boby;
 var power;
+var inter;
+var inter1;
 var power1;
+var degat = true;
+var timerdegat = 0;
+var temps = 30;
+var hp;
+var vie = 3;
 var player;
 var neige;
 var block;
@@ -59,7 +66,12 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.image('power', 'assets/power.png');
+    this.load.image('vie1', 'assets/vie1.png');
+    this.load.image('vie2', 'assets/vie2.png');
+    this.load.image('vie3', 'assets/vie3.png');
+    this.load.image('vie4', 'assets/vie4.png');
     this.load.image('yeti', 'assets/yeti.png');
+    this.load.image('interface', 'assets/interface.png');
     this.load.image('glace', 'assets/glace.png');
     this.load.image('montagne', 'assets/montagne.png');
     this.load.image('neige', 'assets/neige.png');
@@ -91,6 +103,7 @@ function create ()
     power = this.physics.add.staticGroup();
     power1 = this.physics.add.staticGroup();
     yeti = this.physics.add.staticGroup();
+    hp = this.physics.add.staticGroup();
 
     //  Here we create the ground.
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
@@ -111,10 +124,13 @@ function create ()
     wall.create(2400,750,'wall');
     wall.create(2400,150,'wall');
     power.create(50,330,'power').setScale(1.5);
-    yeti.create(1200,1200,'yeti');
-    power1 = this.add.image(50,50,'power').setScrollFactor(0).setScale(3).setVisible(false);
+    inter = this.add.image(500,50,'interface').setScrollFactor(0).setScale(2);
+    power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false).setDepth(2);
+    hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
+    inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
+    controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
     // The player and its settings
-    player = this.physics.add.sprite(400, 400, 'dude').setScale(1.5);
+    player = this.physics.add.sprite(900, 900, 'dude').setScale(1.5);
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -160,10 +176,7 @@ function create ()
 
     bombs = this.physics.add.group();
     eis = this.physics.add.group();   
-   
-    //  The score
-    //niveauTexT = this.add.text(605, 16, ('Visible '), { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
-    //controleText = this.add.text(16, 48, '', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);
+
     
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms,toucheGround);
@@ -176,7 +189,7 @@ function create ()
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 
     
-    block = this.physics.add.image(2000, 300, 'mur').setScale(1.5);
+    block = this.physics.add.image(2000, 300, 'mur').setScale(1.5).setDepth(2);
     this.physics.add.collider(player,block);
 
     block.body.allowGravity = false;
@@ -191,7 +204,7 @@ function create ()
         yoyo: true
     });
     
-    block2 = this.physics.add.image(200, 500, 'mur').setScale(1.5);
+    block2 = this.physics.add.image(300, 300, 'mur').setScale(1.5);
     this.physics.add.collider(player,block2,);
 
     block2.body.allowGravity = false;
@@ -221,6 +234,34 @@ function create ()
         yoyo: true
     });
     
+    yeti = this.physics.add.image(2500, 995, 'yeti');
+    this.physics.add.overlap(player,yeti,toucheYeti,null,this);
+
+    yeti.body.allowGravity = false;
+    yeti.body.immovable = true;
+    yeti.body.moves = false;
+    this.tweens.add({
+        targets: yeti,
+        x: 1700,
+        duration: 5000,
+        ease: 'Sine.easeInOut',
+        repeat: -1,
+        yoyo: true
+    });
+    yeti = this.physics.add.image(50, 500, 'yeti');
+    this.physics.add.overlap(player,yeti,toucheYeti,null,this);
+
+    yeti.body.allowGravity = false;
+    yeti.body.immovable = true;
+    yeti.body.moves = false;
+    this.tweens.add({
+        targets: yeti,
+        x: 200,
+        duration: 5000,
+        ease: 'Sine.easeInOut',
+        repeat: -1,
+        yoyo: true
+    });
 }
     function toucheGlace()
     {
@@ -251,13 +292,53 @@ function create ()
         return power1;
     }
     
+    function toucheYeti(player, yeti)
+    {
+        if(degat == true){
+            timerdegat = timerdegat + 1
+            if(timerdegat >= temps){
+                degat = false
+                timerdegat = 0
+            }
+        }
+    }
 function update ()
 {
+    if(vie>0 && degat == false)
+    {
+        vie = vie - 1;
+        degat = true;
+    }
+    if(vie == 3)
+    {
+        hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true);
+    }
     
+    else if(vie == 2)
+    {
+        hp = this.add.image(600,50,'vie2').setScrollFactor(0).setScale(3.5).setVisible(true);
+    }
+    else if (vie == 1)
+    {
+        hp = this.add.image(600,50,'vie3').setScrollFactor(0).setScale(3.5).setVisible(true);
+    }
+    else
+    {
+        controleText.visible = true;
+        inter1.visible = true;
+        hp = this.add.image(600,50,'vie4').setScrollFactor(0).setScale(3.5).setVisible(true);
+        gameOver = true;
+        player.setVelocityX(0);
+        player.setAccelerationX(0);
+        return controleText;
+        return inter1;
+    } 
+            
     this.cameras.main.startFollow(player,false,0.05,0.05,0,0);
     
-    if (gameOver)
+    if (gameOver == true)
     {
+
         return;
     }
     this.input.gamepad.once('connected', function (pad) {
@@ -306,7 +387,7 @@ function update ()
 
                 else
                 {
-                    player.setAccelerationX(0);
+                    player.setVelocityX(0);
                     player.setAccelerationX(0);
                     player.anims.play('turn');
                 }
