@@ -124,11 +124,7 @@ function create ()
     wall.create(2400,750,'wall');
     wall.create(2400,150,'wall');
     power.create(50,330,'power').setScale(1.5);
-    inter = this.add.image(500,50,'interface').setScrollFactor(0).setScale(2);
-    power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false).setDepth(2);
-    hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
-    inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
-    controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
+    
     // The player and its settings
     player = this.physics.add.sprite(900, 900, 'dude').setScale(1.5);
 
@@ -234,7 +230,7 @@ function create ()
         yoyo: true
     });
     
-    yeti = this.physics.add.image(2500, 995, 'yeti');
+    yeti = this.physics.add.image(2500, 1005, 'yeti');
     this.physics.add.overlap(player,yeti,toucheYeti,null,this);
 
     yeti.body.allowGravity = false;
@@ -248,7 +244,7 @@ function create ()
         repeat: -1,
         yoyo: true
     });
-    yeti = this.physics.add.image(50, 500, 'yeti');
+    yeti = this.physics.add.image(50, 490, 'yeti');
     this.physics.add.overlap(player,yeti,toucheYeti,null,this);
 
     yeti.body.allowGravity = false;
@@ -262,6 +258,11 @@ function create ()
         repeat: -1,
         yoyo: true
     });
+    inter = this.add.image(500,50,'interface').setScrollFactor(0).setScale(2);
+    power1 = this.add.image(250,50,'power').setScrollFactor(0).setScale(3.5).setVisible(false).setDepth(2);
+    hp = this.add.image(600,50,'vie1').setScrollFactor(0).setScale(3.5).setVisible(true).setDepth(2);
+    inter1 = this.add.image(950,515,'interface').setScrollFactor(0).setVisible(false).setDepth(1);
+    controleText = this.add.text(800, 500, 'Vous avez perdu', { fontSize: '32px', fill: '#F00' }).setScrollFactor(0).setVisible(false);
 }
     function toucheGlace()
     {
