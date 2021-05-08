@@ -37,7 +37,8 @@ function create ()
     //  A simple background for our game
     this.add.image(400, 400, 'montagne');
     
-     this.chevalier = this.physics.add.sprite(1000,410, 'chevalier').setCollideWorldBounds(true);
+    this.chevalier = this.physics.add.sprite(600,410, 'chevalier').setCollideWorldBounds(true);
+    this.chevalier = this.physics.add.sprite(1800,350, 'chevalier').setCollideWorldBounds(true);
 
         this.anims.create({
             key: 'droite',
